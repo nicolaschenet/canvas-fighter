@@ -50,66 +50,113 @@ $(function () {
 
             self.state          = "idle";
 
-            self.animation =  {
+            var Animator = function () {
 
-                  interval          : 4
-                , frameCounter      : 0
-                , currentFrame      : 0
-                , currentAnimation  : ""
+                this.speed             = 3;
+                this.frameCounter      = 0;
+                this.currentFrame      = 0;
+                this.currentAnimation  = "";
 
-                , resetState        : function () {
+                this.resetState = function () {
                     this.frameCounter = this.currentFrame = 0;
                 }
 
-                , "entering-stage"  : {
-                    frames  : 7
-                    , play  : function () {
+                this.drawFrame = function (frame) {
+                    ctx.drawImage (
+                        sprite,
+                        frame.x,
+                        frame.y,
+                        self.width,
+                        self.height,
+                        self.x,
+                        self.y,
+                        self.width,
+                        self.height
+                    );
+                }
 
-                        // This animation is played only once, before the beginning of the fight
+                this.animations = {
 
-                        if ( self.animation.currentFrame < this.frames ) {
+                    "entering-stage"  : {
 
-                            // Animation is running, go on Baby
-                            if ( self.animation.frameCounter == self.animation.interval ) {
+                        keyframes  : [
+                              { x : self.width * 0 +10, y : 0 }
+                            , { x : self.width * 1 +10, y : 0 }
+                            , { x : self.width * 2 +10, y : 0 }
+                            , { x : self.width * 3 +10, y : 0 }
+                            , { x : self.width * 4 +10, y : 0 }
+                            , { x : self.width * 5 +10, y : 0 }
+                            , { x : self.width * 6 +10, y : 0 }
+                        ]
 
-                                self.animation.currentFrame++;
-                                self.animation.frameCounter = 0;
-                                ctx.drawImage(sprite, self.width * self.animation.currentFrame +10, 0, self.width, self.height, self.x, self.y, self.width, self.height);
+                        , play  : function () {
+                            console.log(self.animator.currentFrame);
+                            // This animation is played only once, before the beginning of the fight
+
+                            if ( self.animator.currentFrame < this.keyframes.length ) {
+
+                                // animation is running, go on Baby
+                                self.animator.drawFrame(this.keyframes[self.animator.currentFrame]);
+
+                                if ( self.animator.frameCounter == self.animator.speed ) {
+                                    self.animator.frameCounter = 0;
+                                    self.animator.currentFrame++;
+
+                                } else {
+                                    self.animator.frameCounter++;
+                                }
 
                             } else {
-
-                                self.animation.frameCounter++;
-                                ctx.drawImage(sprite, self.width * self.animation.currentFrame +10, 0, self.width, self.height, self.x, self.y, self.width, self.height);
-
+                                // Ryu has finished his pre-fight dance, get ready to fight, Challenger !
+                                self.setState("ready-to-fight");
                             }
-
-                        } else {
-
-                            // Ryu has finished his pre-fight dance, get ready to fight, Challenger !
-                            self.setState("ready-to-fight");
-
                         }
                     }
-                }
 
-                , "ready-to-fight"  : {
-                    frames  : 7
-                    , play  : function () {
-                        ctx.drawImage(sprite, 32, self.height - 6, self.width, self.height, self.x, self.y, self.width, self.height);
+                    , "ready-to-fight"  : {
+
+                        keyframes  : [
+                        ]
+
+                        , play  : function () {
+                            ctx.drawImage(sprite, 32, self.height - 6, self.width, self.height, self.x, self.y, self.width, self.height);
+                        }
+                    }
+
+                    , "jumping" : {
+
+                    }
+
+                    , "falling" : {
+
+                    }
+
+                    , "walking" : {
+
+                    }
+
+                    , "hadoken" : {
+
+                    }
+
+                    , "shoryuken" : {
+
                     }
                 }
-            };
+            }
+
+            self.animator = new Animator();
 
             self.loopAnimation = function () {
-                console.log(self.state);
-                self.animation[self.state].play();
+                self.animator.animations[self.state].play();
             }
 
 
             self.setState = function (state) {
                 self.state = state;
-                self.animation.resetState();
-                self.animation[state].play();  // Initial play to avoid blank states
+
+                self.animator.resetState();
+                self.animator.animations[self.state].play(); // Initial play to avoid blank states
 
             }
 
@@ -129,7 +176,7 @@ $(function () {
         var GameLoop = function () {
             clear();
             fighter.loopAnimation();
-            gLoop = setTimeout(GameLoop, 1000 / 50);  // Global animation speed is set here
+            gLoop = setTimeout(GameLoop, 1000 / 60);  // Global animation speed is set here
         };
 
 
