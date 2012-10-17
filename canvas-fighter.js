@@ -69,7 +69,7 @@ $(function () {
 
                         if ( self.animation.currentFrame < this.frames ) {
 
-                            // Animation is runnig, go on Baby
+                            // Animation is running, go on Baby
                             if ( self.animation.frameCounter == self.animation.interval ) {
 
                                 self.animation.currentFrame++;
