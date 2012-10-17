@@ -1,0 +1,18 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-align: center;
+}
+
+p {
+	margin-top: 0;
+	text-align: left;
+}
+
+
+#stage {
+	display: none;
+	border: solid 1px #ccc;
+	-webkit-box-shadow: 0 0 20px #ddd;
+}
