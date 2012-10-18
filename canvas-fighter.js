@@ -84,6 +84,10 @@ $(function () {
             { x : fighter.width * 4,  y : 0 },
             { x : fighter.width * 5,  y : 0 },
             { x : fighter.width * 6,  y : 0 },
+            { x : fighter.width * 5,  y : 0 },
+            { x : fighter.width * 6,  y : 0 },
+            { x : fighter.width * 7,  y : 0 },
+            { x : fighter.width * 8,  y : 0 },
             { x : fighter.width * 7,  y : 0 },
             { x : fighter.width * 8,  y : 0 }
           ],
