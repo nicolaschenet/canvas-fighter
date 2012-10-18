@@ -58,11 +58,11 @@ $(function () {
       var fighter = this;
 
       fighter.sprite        = new Image();
-      fighter.sprite.src    = "sprites/Ryu.gif";              // This sprite has to be redesigned in order to be efficient
+      fighter.sprite.src    = "sprites/ryu/resources/entering-stage.png";
 
       fighter.name          = "Ryu";
-      fighter.width         = 76;
-      fighter.height        = 120;
+      fighter.width         = 75;
+      fighter.height        = 105;
 
       fighter.x             = 0;
       fighter.y             = 0;
@@ -77,16 +77,18 @@ $(function () {
         "entering-stage"  : {
 
           keyframes  : [
-            { x : 10,                     y : 0 },
-            { x : fighter.width + 10,     y : 0 },
-            { x : fighter.width * 2 + 10, y : 0 },
-            { x : fighter.width * 3 + 10, y : 0 },
-            { x : fighter.width * 4 + 10, y : 0 },
-            { x : fighter.width * 5 + 10, y : 0 },
-            { x : fighter.width * 6 + 10, y : 0 }
+            { x : 0,                  y : 0 },
+            { x : fighter.width,      y : 0 },
+            { x : fighter.width * 2,  y : 0 },
+            { x : fighter.width * 3,  y : 0 },
+            { x : fighter.width * 4,  y : 0 },
+            { x : fighter.width * 5,  y : 0 },
+            { x : fighter.width * 6,  y : 0 },
+            { x : fighter.width * 7,  y : 0 },
+            { x : fighter.width * 8,  y : 0 }
           ],
 
-          repeat      : false,
+          repeat      : true,
           callback    : "ready-to-fight"
 
         },
@@ -151,7 +153,7 @@ $(function () {
 
       var animator = this;
 
-      animator.speed             = 3;
+      animator.speed             = 4;
       animator.frameCounter      = 0;
       animator.currentFrame      = 0;
 
@@ -176,9 +178,7 @@ $(function () {
       animator.play = function (animation) {
 
         animator.drawFrame(animation.keyframes[animator.currentFrame]);
-
         if (animator.frameCounter === animator.speed) {
-
           animator.frameCounter = 0;
           animator.currentFrame++;
 
@@ -194,11 +194,10 @@ $(function () {
 
         if (animator.currentFrame >= fighter.animations[fighter.state].keyframes.length) {
 
-          // Animation is finish, callback please !!
-          fighter.setState(fighter.animations[fighter.state].callback);
-          animator.resetFrames();
-
-        } else if (fighter.animations[fighter.state].repeat) {
+          // Animation is finish, should we call a callback animation ?
+          if (!fighter.animations[fighter.state].repeat) {
+            fighter.setState(fighter.animations[fighter.state].callback);
+          }
 
           animator.resetFrames();
 
