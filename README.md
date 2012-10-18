@@ -2,7 +2,7 @@
 
 > The main goal is to experiment with HTML5 / Canvas / Javascript, not really to make an actual game :)
 
----
+![Ryu is getting sprited...](http://distilleryimage10.instagram.com/eed8db44196111e2b18c12313b0892dc_7.jpg)
 
 ### Goal
 
