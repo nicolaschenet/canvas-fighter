@@ -15,4 +15,5 @@ p {
 	display: none;
 	border: solid 1px #ccc;
 	-webkit-box-shadow: 0 0 20px #ddd;
+	margin: 50px;
 }
