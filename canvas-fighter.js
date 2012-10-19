@@ -9,7 +9,7 @@ $(function () {
 
     var
       width    = 800,
-      height   = 600,
+      height   = 400,
       floorY   = 50,
       c        = document.getElementById("stage"),
       ctx      = c.getContext("2d"),
