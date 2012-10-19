@@ -37,7 +37,7 @@ $(function () {
     var GameLoop = function () {
       clear();
       animator.loop();
-      gLoop = setTimeout(GameLoop, 1000 / 60);
+      gLoop = setTimeout(GameLoop, animator.frameRate);
     };
 
 
@@ -58,7 +58,7 @@ $(function () {
       var fighter = this;
 
       fighter.sprite        = new Image();
-      fighter.sprite.src    = "sprites/ryu/resources/entering-stage.png";
+      fighter.sprite.src    = "sprites/ryu/resources/ryu.png";
 
       fighter.name          = "Ryu";
       fighter.width         = 75;
@@ -67,7 +67,8 @@ $(function () {
       fighter.x             = 0;
       fighter.y             = 0;
 
-      fighter.state         = "entering-stage";              // Default state / Associated animation should always be "repeat"
+      // Default state / Associated animation should always be "repeat"
+      fighter.state         = "entering-stage";
 
       fighter.animations    = {
 
@@ -75,6 +76,8 @@ $(function () {
         // with the fighter's states
 
         "entering-stage"  : {
+
+          // This is the introductory "dance" when the fighter enters the stage
 
           keyframes  : [
             { x : 0,                  y : 0 },
@@ -89,18 +92,26 @@ $(function () {
             { x : fighter.width * 7,  y : 0 },
             { x : fighter.width * 8,  y : 0 },
             { x : fighter.width * 7,  y : 0 },
-            { x : fighter.width * 8,  y : 0 }
+            { x : fighter.width * 8,  y : 0 },
+            // Just a transition frame, to effectively notice the state has changed :)
+            { x : 0,                  y : fighter.height }
           ],
 
-          repeat      : true,
+          repeat      : false,
           callback    : "ready-to-fight"
 
         },
 
         "ready-to-fight"  : {
 
+          // Main default animation
+
           keyframes  : [
-            { x : 32, y : fighter.height - 6 }
+            { x : fighter.width,      y : fighter.height },
+            { x : fighter.width * 2,  y : fighter.height },
+            { x : fighter.width * 3,  y : fighter.height },
+            { x : fighter.width * 4,  y : fighter.height },
+            { x : fighter.width * 5,  y : fighter.height }
           ],
 
           repeat: true
@@ -157,7 +168,8 @@ $(function () {
 
       var animator = this;
 
-      animator.speed             = 4;
+      animator.speed             = 1;
+      animator.frameRate         = (24/60)*100;
       animator.frameCounter      = 0;
       animator.currentFrame      = 0;
 
