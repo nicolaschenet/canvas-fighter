@@ -3,7 +3,7 @@ body {
 	padding: 0;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-align: center;
-	background: #eee;
+	background: #fafafa;
 }
 
 p {
@@ -21,15 +21,15 @@ header {
 }
 
 header h1 {
-	font-family: 'Oswald', sans-serif;
-	font-weight: normal;
-	font-size: 3em;
+	font-family: 'Cabin Sketch', cursive;
+	font-size: 4em;
 	margin: 25px;
 	color: #f7360a;
 }
 
 header p {
 	margin: 25px;
+	font-size: .9em;
 	font-style: italic;
 	color: #888;
 }
@@ -37,7 +37,7 @@ header p {
 footer {
 	padding: 50px;
 	margin-top: 30px;
-	background: #fbfbfb;
+	background: #fff;
 }
 
 
@@ -45,8 +45,8 @@ footer {
 	background: white;
 	padding: 5px;
 	display: none;
-	border: solid 1px #CCC;
-	-webkit-box-shadow: 0 20px 20px -20px rgba(0, 0, 0, .2);
+	border: solid 1px #e5e5e5;
+	-webkit-box-shadow: 0 0 300px rgba(0, 0, 0, .1);
 	margin: 0 0 20px;
 	-webkit-border-radius: 2px;
 }
