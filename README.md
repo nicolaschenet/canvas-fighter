@@ -21,14 +21,17 @@
  - Moves sounds
  - Stage sounds
 
-#### How to run it ?
+### How to run it ?
 Just open canvas-fighter.html in a modern browser...
 (An internet connexion is required to load jQuery stuff ^^)
+
+### Want to see it ? (Warning! Wet paint ^^)
+[Take a look at the demo !](http://nicolaschenet.github.com/canvas-fighter/)
 
 ### Changelog
 
 [See changelog here](https://github.com/nicolaschenet/canvas-fighter/wiki/Changelog)
 
-#### Next step...
+### Next step...
 
 Yeahhh the sprite is still buggy... I have to recompose the sprite so that each frame has the same width and height. Will be the next step, with the creation of all animations (keyframes sequences).
