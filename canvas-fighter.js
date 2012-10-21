@@ -11,6 +11,7 @@ $(function () {
       width    = 800,
       height   = 400,
       floorY   = 50,
+      padding  = 10,
       c        = document.getElementById("stage"),
       ctx      = c.getContext("2d"),
       gLoop,
@@ -37,7 +38,7 @@ $(function () {
     var GameLoop = function () {
       clear();
       animator.loop();
-      gLoop = setTimeout(GameLoop, animator.frameRate);
+      gLoop = setTimeout(GameLoop, 0);
     };
 
 
@@ -46,6 +47,12 @@ $(function () {
       $("#stage").fadeIn(300, function () {
         var gameLoop = new GameLoop();
       });
+
+      setInterval(function () {
+        $("#framerate-counter").text(animator.globalFrameCounter);
+        animator.globalFrameCounter = 0;
+      }, 1000);
+
     };
 
 
@@ -147,6 +154,26 @@ $(function () {
         }
       };
 
+      fighter.keyBindings = {
+        "keydown" : [
+          { key:    37, action: function () { fighter.move("left");   } },  // Left arrow   (MAC)
+          { key:    39, action: function () { fighter.move("right");  } }   // Right arrow  (MAC)
+        ]
+      };
+
+      fighter.initKeyBindings = function () {
+        var eventHandler;
+        for (eventHandler in fighter.keyBindings) {
+          $(document).on(eventHandler, function (e) {
+            $.each(fighter.keyBindings[eventHandler], function (index) {
+              var keyBinding = fighter.keyBindings[eventHandler][index];
+              if (keyBinding.key === e.which) {
+                keyBinding.action.call();
+              }
+            });
+          });
+        }
+      };
 
       fighter.setState = function (state) {
         fighter.state = state;
@@ -155,6 +182,23 @@ $(function () {
       fighter.setPosition = function (x, y) {
         fighter.x = x;
         fighter.y = y;
+      };
+
+      fighter.move = function (direction) {
+        if (fighter.state !== "entering-stage") {
+          switch (direction) {
+          case "right":
+            if (fighter.x + fighter.width <= width - padding) {
+              fighter.x += 4;
+            }
+            break;
+          case "left":
+            if (fighter.x >= padding) {
+              fighter.x -= 4;
+            }
+            break;
+          }
+        }
       };
 
     };
@@ -168,10 +212,10 @@ $(function () {
 
       var animator = this;
 
-      animator.speed             = 1;
-      animator.frameRate         = (24/60)*100;
-      animator.frameCounter      = 0;
-      animator.currentFrame      = 0;
+      animator.speed              = 13;
+      animator.globalFrameCounter = 0;
+      animator.frameCounter       = 0;
+      animator.currentFrame       = 0;
 
       animator.resetFrames = function () {
         this.frameCounter = this.currentFrame = 0;
@@ -192,43 +236,36 @@ $(function () {
       };
 
       animator.play = function (animation) {
-
         animator.drawFrame(animation.keyframes[animator.currentFrame]);
         if (animator.frameCounter === animator.speed) {
           animator.frameCounter = 0;
           animator.currentFrame++;
-
         } else {
-
           animator.frameCounter++;
-
         }
-
       };
 
       animator.loop = function () {
-
         if (animator.currentFrame >= fighter.animations[fighter.state].keyframes.length) {
-
           // Animation is finish, should we call a callback animation ?
           if (!fighter.animations[fighter.state].repeat) {
             fighter.setState(fighter.animations[fighter.state].callback);
           }
-
           animator.resetFrames();
-
         }
-
         animator.play(fighter.animations[fighter.state]);
-
+        animator.globalFrameCounter++;
       };
-
     };
 
-    var ryu         = new Fighter();
-    var animator    = new Animator(ryu);
 
+    /** Fighter init *******************************/
+
+    var ryu = new Fighter();
     ryu.setPosition(100, height - ryu.height - floorY);
+    ryu.initKeyBindings();
+
+    var animator    = new Animator(ryu);
 
   };
 
