@@ -55,29 +55,88 @@ $(function () {
 
     };
 
-
-    /** Fighter Class ****************************/
-
-    // ATM, the only fighter is Ryu
+    /** Parent Fighter class *********************/
 
     var Fighter = function () {
 
       var fighter = this;
 
-      fighter.sprite        = new Image();
-      fighter.sprite.src    = "sprites/ryu/resources/ryu.png";
+      fighter.sprite = new Image();
 
-      fighter.name          = "Ryu";
-      fighter.width         = 75;
-      fighter.height        = 105;
+      fighter.x      = 0;
+      fighter.y      = 0;
 
-      fighter.x             = 0;
-      fighter.y             = 0;
 
       // Default state / Associated animation should always be "repeat"
-      fighter.state         = "entering-stage";
 
-      fighter.animations    = {
+      fighter.state  = "entering-stage";
+
+
+      // Methods
+
+      fighter.initCharacter = function (fighterHeight, fighterWidth) {
+        fighter.height = fighterHeight;
+        fighter.width = fighterWidth;
+        fighter.setPosition(100, height - fighter.height - floorY);
+      };
+
+      fighter.initKeyBindings = function (keyBindings) {
+        var eventHandler;
+        for (eventHandler in keyBindings) {
+          $(document).on(eventHandler, function (e) {
+            $.each(keyBindings[eventHandler], function (index) {
+              var keyBinding = keyBindings[eventHandler][index];
+              if (keyBinding.key === e.which) {
+                keyBinding.action.call();
+              }
+            });
+          });
+        }
+      };
+
+      fighter.setState = function (state) {
+        fighter.state = state;
+      };
+
+      fighter.setPosition = function (x, y) {
+        fighter.x = x;
+        fighter.y = y;
+      };
+
+      fighter.move = function (direction) {
+        if (fighter.state !== "entering-stage") {
+          switch (direction) {
+          case "right":
+            if (fighter.x + fighter.width <= width - padding) {
+              fighter.x += 4;
+            }
+            break;
+          case "left":
+            if (fighter.x >= padding) {
+              fighter.x -= 4;
+            }
+            break;
+          }
+        }
+      };
+    };
+
+
+    /** Fighters ***************************************/
+
+    // ATM, the only fighter is Ryu
+
+    var Ryu = function () {
+
+      var ryu = this;
+
+      ryu.sprite.src    = "sprites/ryu/resources/ryu.png";
+
+      ryu.name          = "Ryu";
+      ryu.width         = 75;
+      ryu.height        = 105;
+
+      ryu.animations    = {
 
         // The names of animations are associated
         // with the fighter's states
@@ -88,20 +147,20 @@ $(function () {
 
           keyframes  : [
             { x : 0,                  y : 0 },
-            { x : fighter.width,      y : 0 },
-            { x : fighter.width * 2,  y : 0 },
-            { x : fighter.width * 3,  y : 0 },
-            { x : fighter.width * 4,  y : 0 },
-            { x : fighter.width * 5,  y : 0 },
-            { x : fighter.width * 6,  y : 0 },
-            { x : fighter.width * 5,  y : 0 },
-            { x : fighter.width * 6,  y : 0 },
-            { x : fighter.width * 7,  y : 0 },
-            { x : fighter.width * 8,  y : 0 },
-            { x : fighter.width * 7,  y : 0 },
-            { x : fighter.width * 8,  y : 0 },
+            { x : ryu.width,      y : 0 },
+            { x : ryu.width * 2,  y : 0 },
+            { x : ryu.width * 3,  y : 0 },
+            { x : ryu.width * 4,  y : 0 },
+            { x : ryu.width * 5,  y : 0 },
+            { x : ryu.width * 6,  y : 0 },
+            { x : ryu.width * 5,  y : 0 },
+            { x : ryu.width * 6,  y : 0 },
+            { x : ryu.width * 7,  y : 0 },
+            { x : ryu.width * 8,  y : 0 },
+            { x : ryu.width * 7,  y : 0 },
+            { x : ryu.width * 8,  y : 0 },
             // Just a transition frame, to effectively notice the state has changed :)
-            { x : 0,                  y : fighter.height }
+            { x : 0,                  y : ryu.height }
           ],
 
           repeat      : false,
@@ -114,11 +173,11 @@ $(function () {
           // Main default animation
 
           keyframes  : [
-            { x : fighter.width,      y : fighter.height },
-            { x : fighter.width * 2,  y : fighter.height },
-            { x : fighter.width * 3,  y : fighter.height },
-            { x : fighter.width * 4,  y : fighter.height },
-            { x : fighter.width * 5,  y : fighter.height }
+            { x : ryu.width,      y : ryu.height },
+            { x : ryu.width * 2,  y : ryu.height },
+            { x : ryu.width * 3,  y : ryu.height },
+            { x : ryu.width * 4,  y : ryu.height },
+            { x : ryu.width * 5,  y : ryu.height }
           ],
 
           repeat: true
@@ -154,54 +213,16 @@ $(function () {
         }
       };
 
-      fighter.keyBindings = {
+      ryu.keyBindings = {
         "keydown" : [
-          { key:    37, action: function () { fighter.move("left");   } },  // Left arrow   (MAC)
-          { key:    39, action: function () { fighter.move("right");  } }   // Right arrow  (MAC)
+          { key:    37, action: function () { ryu.move("left");   } },  // Left arrow   (MAC)
+          { key:    39, action: function () { ryu.move("right");  } }   // Right arrow  (MAC)
         ]
       };
 
-      fighter.initKeyBindings = function () {
-        var eventHandler;
-        for (eventHandler in fighter.keyBindings) {
-          $(document).on(eventHandler, function (e) {
-            $.each(fighter.keyBindings[eventHandler], function (index) {
-              var keyBinding = fighter.keyBindings[eventHandler][index];
-              if (keyBinding.key === e.which) {
-                keyBinding.action.call();
-              }
-            });
-          });
-        }
-      };
-
-      fighter.setState = function (state) {
-        fighter.state = state;
-      };
-
-      fighter.setPosition = function (x, y) {
-        fighter.x = x;
-        fighter.y = y;
-      };
-
-      fighter.move = function (direction) {
-        if (fighter.state !== "entering-stage") {
-          switch (direction) {
-          case "right":
-            if (fighter.x + fighter.width <= width - padding) {
-              fighter.x += 4;
-            }
-            break;
-          case "left":
-            if (fighter.x >= padding) {
-              fighter.x -= 4;
-            }
-            break;
-          }
-        }
-      };
-
     };
+
+    Ryu.prototype = new Fighter();
 
 
     /** Animator Class ******************************/
@@ -261,11 +282,11 @@ $(function () {
 
     /** Fighter init *******************************/
 
-    var ryu = new Fighter();
-    ryu.setPosition(100, height - ryu.height - floorY);
-    ryu.initKeyBindings();
+    var ryu = new Ryu();
+    ryu.initCharacter(ryu.height, ryu.width);
+    ryu.initKeyBindings(ryu.keyBindings);
 
-    var animator    = new Animator(ryu);
+    var animator = new Animator(ryu);
 
   };
 
