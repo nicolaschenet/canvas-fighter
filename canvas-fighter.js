@@ -93,12 +93,16 @@ $(function () {
           });
         }
         $(document).on("keyup", function () {
-          fighter.setState("ready-to-fight");
+          fighter.resetState();
         });
       };
 
       fighter.setState = function (state) {
         fighter.state = state;
+      };
+
+      fighter.resetState = function () {
+        fighter.state = "ready-to-fight";
       };
 
       fighter.setPosition = function (x, y) {
@@ -138,8 +142,10 @@ $(function () {
       ryu.sprite.src    = "sprites/ryu/resources/ryu.png";
 
       ryu.name          = "Ryu";
-      ryu.width         = 75;
+      ryu.width         = 78;
       ryu.height        = 105;
+
+      ryu.speed         = 15;
 
       ryu.animations    = {
 
@@ -272,7 +278,7 @@ $(function () {
 
       var animator = this;
 
-      animator.speed              = 15;
+      animator.speed              = fighter.speed;
       animator.globalFrameCounter = 0;
       animator.frameCounter       = 0;
       animator.currentFrame       = 0;
