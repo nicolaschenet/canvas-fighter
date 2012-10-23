@@ -191,7 +191,7 @@ $(function () {
 
         "walking-forward" : {
 
-          // Walking towards the ooponent
+          // Walking towards the opponent
 
           keyframes : [
             { x : 0,              y : ryu.height * 2 },
@@ -208,7 +208,7 @@ $(function () {
 
         "walking-backward" : {
 
-          // Walking towards the ooponent
+          // Walking away from the opponent
 
           keyframes : [
             { x : 0,              y : ryu.height * 3 },
