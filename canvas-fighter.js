@@ -92,6 +92,9 @@ $(function () {
             });
           });
         }
+        $(document).on("keyup", function () {
+          fighter.setState("ready-to-fight");
+        });
       };
 
       fighter.setState = function (state) {
@@ -107,13 +110,15 @@ $(function () {
         if (fighter.state !== "entering-stage") {
           switch (direction) {
           case "right":
+            fighter.setState("walking-forward");
             if (fighter.x + fighter.width <= width - padding) {
-              fighter.x += 4;
+              fighter.x += 8;
             }
             break;
           case "left":
+            fighter.setState("walking-backward");
             if (fighter.x >= padding) {
-              fighter.x -= 4;
+              fighter.x -= 8;
             }
             break;
           }
@@ -146,7 +151,7 @@ $(function () {
           // This is the introductory "dance" when the fighter enters the stage
 
           keyframes  : [
-            { x : 0,                  y : 0 },
+            { x : 0,              y : 0 },
             { x : ryu.width,      y : 0 },
             { x : ryu.width * 2,  y : 0 },
             { x : ryu.width * 3,  y : 0 },
@@ -178,6 +183,40 @@ $(function () {
             { x : ryu.width * 3,  y : ryu.height },
             { x : ryu.width * 4,  y : ryu.height },
             { x : ryu.width * 5,  y : ryu.height }
+          ],
+
+          repeat: true
+
+        },
+
+        "walking-forward" : {
+
+          // Walking towards the ooponent
+
+          keyframes : [
+            { x : 0,              y : ryu.height * 2 },
+            { x : ryu.width,      y : ryu.height * 2 },
+            { x : ryu.width * 2,  y : ryu.height * 2 },
+            { x : ryu.width * 3,  y : ryu.height * 2 },
+            { x : ryu.width * 4,  y : ryu.height * 2 },
+            { x : ryu.width * 5,  y : ryu.height * 2 }
+          ],
+
+          repeat: true
+
+        },
+
+        "walking-backward" : {
+
+          // Walking towards the ooponent
+
+          keyframes : [
+            { x : 0,              y : ryu.height * 3 },
+            { x : ryu.width,      y : ryu.height * 3 },
+            { x : ryu.width * 2,  y : ryu.height * 3 },
+            { x : ryu.width * 3,  y : ryu.height * 3 },
+            { x : ryu.width * 4,  y : ryu.height * 3 },
+            { x : ryu.width * 5,  y : ryu.height * 3 }
           ],
 
           repeat: true
@@ -233,7 +272,7 @@ $(function () {
 
       var animator = this;
 
-      animator.speed              = 13;
+      animator.speed              = 15;
       animator.globalFrameCounter = 0;
       animator.frameCounter       = 0;
       animator.currentFrame       = 0;
